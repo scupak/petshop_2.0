@@ -38,8 +38,9 @@ namespace Petshop.UI
                 "Show a list of all Owners",
                 "Show one owner by id",
                 "create a new owner",
-                "Delete owner",
                 "Update an owner",
+                "Delete owner",
+                
 
                 "Exit"
 
@@ -212,7 +213,7 @@ namespace Petshop.UI
 
                         if (selectedPet == null)
                         {
-                            Console.WriteLine("could not find video");
+                            Console.WriteLine("could not find pet");
                             Console.ReadLine();
                         }
                         else
@@ -661,19 +662,19 @@ namespace Petshop.UI
 
                         if (selectedOwner == null)
                         {
-                            Console.WriteLine("could not find video");
+                            Console.WriteLine("could not find owner");
                             Console.ReadLine();
                         }
                         else
                         {
 
 
-                            Console.WriteLine(_PetService.GetPetById(idSelection));
+                            Console.WriteLine(_ownerService.GetOwnerById(idSelection));
                             Console.ReadLine();
                             Console.WriteLine("Select what part of the owner you want to edit");
                             
                            Owner editedOwner = new Owner(selectedOwner.FirstName,selectedOwner.LastName, selectedOwner.Address, selectedOwner.PhoneNumber, selectedOwner.Email);
-
+                           editedOwner.Id = selectedOwner.Id;
                             string[] updateMenuItems =
                             {
                                 //string name, DateTime birthdate, string color , string previousOwner,double price, PetType petType, DateTime soldDate
@@ -699,20 +700,20 @@ namespace Petshop.UI
                                 {
                                     case 1:
 
-                                        UpdateOwner("firstName",editedOwner);
+                                        UpdateOwner("firstName",editedOwner,UpdateTypes.FirstName);
                                         break;
                                     case 2:
-                                        UpdateOwner("LastName", editedOwner);
+                                        UpdateOwner("LastName", editedOwner,UpdateTypes.LastName);
                                         break;
                                     case 3:
-                                        UpdateOwner("address", editedOwner);
+                                        UpdateOwner("address", editedOwner,UpdateTypes.Address);
                                         break;
                                     case 4:
-                                        UpdateOwner("phonenumber", editedOwner);
+                                        UpdateOwner("phonenumber", editedOwner,UpdateTypes.Phonenumber);
                                         break;
 
                                     case 5:
-                                        UpdateOwner("email", editedOwner);
+                                        UpdateOwner("email", editedOwner,UpdateTypes.Email);
                                         break;
 
 
@@ -792,7 +793,7 @@ namespace Petshop.UI
             return selection;
         }
 
-        private void UpdateOwner(string input, Owner editedOwner)
+        private void UpdateOwner(string input, Owner editedOwner,UpdateTypes type)
         {
             string text = input;
             Console.WriteLine($" edit {input}");
@@ -805,13 +806,40 @@ namespace Petshop.UI
                 input = Console.ReadLine();
             }
 
-            //editedOwner = selectedOwner;
-            editedOwner.FirstName = input;
+            switch (type)
+            {
+
+                case UpdateTypes.FirstName:
+                   //editedOwner = selectedOwner;
+                    editedOwner.FirstName = input;
+                    break;
+                case UpdateTypes.LastName:
+                    //editedOwner = selectedOwner;
+                    editedOwner.LastName = input;
+                    break;
+                case UpdateTypes.Email:
+                    //editedOwner = selectedOwner;
+                    editedOwner.Email = input;
+                    break;
+
+                case UpdateTypes.Address:
+                    //editedOwner = selectedOwner;
+                    editedOwner.Address = input;
+                    break;
+
+                case UpdateTypes.Phonenumber:
+                    //editedOwner = selectedOwner;
+                    editedOwner.PhoneNumber = input;
+                    break;
+
+
+
+            }
 
             if (_ownerService.EditOwner(editedOwner) != null)
             {
                 Console.WriteLine("the update was successful");
-                Console.WriteLine(_PetService.GetPetById(editedOwner.Id));
+                Console.WriteLine(_ownerService.GetOwnerById(editedOwner.Id));
                 Console.ReadLine();
 
             }
