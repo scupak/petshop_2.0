@@ -50,11 +50,11 @@ namespace Petshop.core.ApplicationServices
 
         }
 
-        public Pet EditPet(Pet video)
+        public Pet EditPet(Pet pet)
         {
-            int index = _petRepository.GetPets().FindLastIndex(c => c.Id == video.Id);
+            int index = _petRepository.GetPets().FindLastIndex(c => c.Id == pet.Id);
 
-            return _petRepository.EditPet(video, index);
+            return _petRepository.EditPet(pet, index);
 
         }
     }

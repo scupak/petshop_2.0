@@ -11,7 +11,13 @@ namespace Petshop.UI
             IPetRepository petRepository = new PetRepository();
             petRepository.InitData();
             IPetService petService = new PetService(petRepository);
-            Printer print = new Printer(petService);
+
+            IOwnerRepository ownerRepository = new OwnerRepository();
+            ownerRepository.InitData();
+            IOwnerService ownerService = new OwnerService(ownerRepository);
+
+
+            Printer print = new Printer(petService,ownerService);
             print.PrintMenu();
         }
 

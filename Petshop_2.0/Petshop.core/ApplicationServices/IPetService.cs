@@ -9,11 +9,11 @@ namespace Petshop.core.ApplicationServices
 
         public List<Pet> GetPets();
 
-        public Pet CreatePet(Pet video);
+        public Pet CreatePet(Pet pet);
 
         public bool DeletePet(int id);
 
-        public Pet EditPet(Pet video);
+        public Pet EditPet(Pet pet);
 
 
 

@@ -3,16 +3,20 @@ using Petshop.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
+using Petshop.core.DomainServices;
 
 namespace Petshop.UI
 {
     public class Printer
     {
         private IPetService _PetService;
-        private Pet editedPet;
-        public Printer(IPetService petService)
+        private IOwnerService _ownerService;
+        
+        public Printer(IPetService petService,IOwnerService ownerService)
         {
             _PetService = petService;
+            _ownerService = ownerService;
 
         }
 
@@ -30,13 +34,20 @@ namespace Petshop.UI
                 "Search Pets by Type",
                 "Sort Pets By Price",
                 "Get 5 cheapest available Pets",
+
+                "Show a list of all Owners",
+                "Show one owner by id",
+                "create a new owner",
+                "Delete owner",
+                "Update an owner",
+
                 "Exit"
 
 
             };
 
             var selection = 0;
-            while (selection != 9)
+            while (selection != 14)
             {
 
 
@@ -209,6 +220,8 @@ namespace Petshop.UI
 
 
                             Console.WriteLine(_PetService.GetPetById(idSelection));
+                            Pet editedPet = new Pet(selectedPet.Name,selectedPet.Birthdate,selectedPet.Color,selectedPet.PreviousOwner,selectedPet.Price,selectedPet.PetType,selectedPet.SoldDate);
+                            editedPet.Id = selectedPet.Id;
                             Console.ReadLine();
                             Console.WriteLine("Select what part of the pet you want to edit");
 
@@ -251,9 +264,9 @@ namespace Petshop.UI
                                             editName = Console.ReadLine();
                                         }
 
-                                        editedPet = selectedPet;
+                                        //editedPet = selectedPet;
                                         editedPet.Name = editName;
-
+                                       
                                         if (_PetService.EditPet(editedPet) != null)
                                         {
                                             Console.WriteLine("the update was successful");
@@ -266,6 +279,7 @@ namespace Petshop.UI
                                             Console.Write("the update was unsuccessful");
                                             Console.ReadLine();
                                         }
+                                        
 
                                         break;
 
@@ -281,7 +295,7 @@ namespace Petshop.UI
                                         }
 
 
-                                        editedPet = selectedPet;
+                                        //editedPet = selectedPet;
                                         editedPet.Birthdate = editBirthday;
 
                                         if (_PetService.EditPet(editedPet) != null)
@@ -311,7 +325,7 @@ namespace Petshop.UI
                                             editColor = Console.ReadLine();
                                         }
 
-                                        editedPet = selectedPet;
+                                        //editedPet = selectedPet;
                                         editedPet.Color = editColor;
 
                                         if (_PetService.EditPet(editedPet) != null)
@@ -341,7 +355,7 @@ namespace Petshop.UI
                                             editpreviousOwner = Console.ReadLine();
                                         }
 
-                                        editedPet = selectedPet;
+                                        //editedPet = selectedPet;
                                         editedPet.PreviousOwner = editpreviousOwner;
 
                                         if (_PetService.EditPet(editedPet) != null)
@@ -370,7 +384,7 @@ namespace Petshop.UI
 
                                         }
 
-                                        editedPet = selectedPet;
+                                        //editedPet = selectedPet;
                                         editedPet.Price = editprice;
 
                                         if (_PetService.EditPet(editedPet) != null)
@@ -422,7 +436,7 @@ namespace Petshop.UI
                                         }
 
 
-                                        editedPet = selectedPet;
+                                        //editedPet = selectedPet;
                                         editedPet.PetType = Edittypes;
 
                                         if (_PetService.EditPet(editedPet) != null)
@@ -452,7 +466,7 @@ namespace Petshop.UI
                                         }
 
 
-                                        editedPet = selectedPet;
+                                        //editedPet = selectedPet;
                                         editedPet.Birthdate = editsoldDate;
 
                                         if (_PetService.EditPet(editedPet) != null)
@@ -568,7 +582,168 @@ namespace Petshop.UI
                         Console.ReadLine();
                         break;
 
+
                     case 9:
+                        Console.WriteLine("List all owners");
+                        for (int i = 0; i < _ownerService.GetOwners().Count; i++)
+                        {
+                            //Console.WriteLine((i +1) + ":" + menuItems[i]);
+                            Console.WriteLine($"{(i + 1)}:{ _ownerService.GetOwners()[i]}");
+
+                        }
+
+                        Console.ReadLine();
+                        break;
+
+                    case 10:
+
+                        Console.WriteLine("show single owner by id");
+                        Console.Write("write id of the owner you want:");
+
+                        while (!int.TryParse(Console.ReadLine(), out idSelection))
+                        {
+                            Console.WriteLine("You need to select an id");
+
+                        }
+
+
+                        // int showid = selection;
+
+                        if (_ownerService.GetOwnerById(idSelection) == null)
+                        {
+                            Console.WriteLine("could not find owner");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+
+
+                            Console.WriteLine(_ownerService.GetOwnerById(idSelection));
+                            Console.ReadLine();
+                        }
+
+
+                        break;
+
+                    case 11:
+                        //public Owner(string firstName, string lastName, string address, string phoneNumber, string email)
+                        // TODO: add input validation
+                        Console.WriteLine("Add owner");
+                        Console.WriteLine("Enter firstName");
+                        string firstName = Console.ReadLine();
+                        Console.WriteLine("Enter lastName");
+                        string lastName = Console.ReadLine();
+                        Console.WriteLine("Enter address");
+                        string address = Console.ReadLine();
+                        Console.WriteLine("Enter phoneNumber");
+                        string phoneNumber = Console.ReadLine();
+                        Console.WriteLine("Enter  email");
+                        string email = Console.ReadLine();
+
+
+                       Console.WriteLine(_ownerService.CreateOwner(new Owner(firstName,lastName,address,phoneNumber,email)));
+
+                        Console.ReadLine();
+                        break;
+
+                    case 12:
+                        Console.WriteLine("Edit owner");
+                        Console.Write("write the id of the owner you wish to edit:");
+                        while (!int.TryParse(Console.ReadLine(), out idSelection))
+                        {
+                            Console.WriteLine("You need to select an id");
+
+                        }
+
+                        Owner selectedOwner;
+                        selectedOwner = _ownerService.GetOwnerById(idSelection);
+
+
+                        if (selectedOwner == null)
+                        {
+                            Console.WriteLine("could not find video");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+
+
+                            Console.WriteLine(_PetService.GetPetById(idSelection));
+                            Console.ReadLine();
+                            Console.WriteLine("Select what part of the owner you want to edit");
+                            
+                           Owner editedOwner = new Owner(selectedOwner.FirstName,selectedOwner.LastName, selectedOwner.Address, selectedOwner.PhoneNumber, selectedOwner.Email);
+
+                            string[] updateMenuItems =
+                            {
+                                //string name, DateTime birthdate, string color , string previousOwner,double price, PetType petType, DateTime soldDate
+                                "Edit firstName",
+                                "Edit lastName",
+                                "Edit address",
+                                "Edit phonenumber",
+                                "Edit email",
+                                "Exit"
+                            };
+                            var editSelection = 0;
+
+                            while (editSelection != 6)
+                            {
+
+
+                                editSelection = ShowMenu(updateMenuItems);
+                                //int editIdSelection;
+                                Console.ReadLine();
+
+
+                                switch (editSelection)
+                                {
+                                    case 1:
+
+                                        UpdateOwner("firstName",editedOwner);
+                                        break;
+                                    case 2:
+                                        UpdateOwner("LastName", editedOwner);
+                                        break;
+                                    case 3:
+                                        UpdateOwner("address", editedOwner);
+                                        break;
+                                    case 4:
+                                        UpdateOwner("phonenumber", editedOwner);
+                                        break;
+
+                                    case 5:
+                                        UpdateOwner("email", editedOwner);
+                                        break;
+
+
+                                }
+
+
+
+
+                            }
+
+                        }
+                        break;
+                    case 13:
+                        // TODO: finish creating deletion. 
+                        Console.WriteLine("Delete Owner");
+                        Console.Write("write the id of the owner you wish to delete:");
+                        while (!int.TryParse(Console.ReadLine(), out idSelection))
+                        {
+                            Console.WriteLine("You need to select an id");
+
+                        }
+
+                        Console.WriteLine(_ownerService.DeleteOwner(idSelection)
+                            ? "Owner was deleted successfully"
+                            : "Owner could not be deleted or the wrong id was typed");
+                        Console.ReadLine();
+
+                        break;
+
+
+                    case 14:
                         Console.WriteLine("Exit");
                         Console.ReadLine();
                         break;
@@ -615,6 +790,36 @@ namespace Petshop.UI
             }
             Console.WriteLine("Selection " + selection);
             return selection;
+        }
+
+        private void UpdateOwner(string input, Owner editedOwner)
+        {
+            string text = input;
+            Console.WriteLine($" edit {input}");
+            Console.Write($" write new {input}");
+            input = Console.ReadLine();
+
+            while (input == null || input.Length <= 0)
+            {
+                Console.Write($"{text} has to have a length higher then 0:");
+                input = Console.ReadLine();
+            }
+
+            //editedOwner = selectedOwner;
+            editedOwner.FirstName = input;
+
+            if (_ownerService.EditOwner(editedOwner) != null)
+            {
+                Console.WriteLine("the update was successful");
+                Console.WriteLine(_PetService.GetPetById(editedOwner.Id));
+                Console.ReadLine();
+
+            }
+            else
+            {
+                Console.Write("the update was unsuccessful");
+                Console.ReadLine();
+            }
         }
     }
 }

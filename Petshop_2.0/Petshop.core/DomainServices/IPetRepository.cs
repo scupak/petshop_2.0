@@ -5,9 +5,9 @@ namespace Petshop.core.DomainServices
 {
     public interface IPetRepository
     {
-        public Pet AddPet(Pet video);
+        public Pet AddPet(Pet pet);
 
-        public Pet EditPet(Pet video, int index);
+        public Pet EditPet(Pet pet, int index);
 
         public List<Pet> GetPets();
 
