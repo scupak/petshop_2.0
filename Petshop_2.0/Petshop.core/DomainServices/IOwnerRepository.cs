@@ -13,6 +13,6 @@ namespace Petshop.core.DomainServices
 
         public List<Owner> GetOwners();
 
-        public void InitData();
+        
     }
 }

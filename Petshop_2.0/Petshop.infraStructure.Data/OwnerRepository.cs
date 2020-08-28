@@ -38,11 +38,6 @@ namespace Petshop.infraStructure.Data
             return Owners;
         }
 
-        public void InitData()
-        {
-            AddOwner(new Owner("greg", "davidson", "999manstreet", "29999", "mike@email.com"));
-            AddOwner(new Owner("alex", "davidson", "999manstreet", "29999", "mike@email.com"));
-            AddOwner(new Owner("mike", "davidson", "999manstreet", "29999", "mike@email.com"));
-        }
+       
     }
 }

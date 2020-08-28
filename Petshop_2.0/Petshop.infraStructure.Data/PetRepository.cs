@@ -19,17 +19,7 @@ namespace Petshop.infraStructure.Data
 
         }
 
-        public void InitData()
-        {
-            AddPet(new Pet("hulk", DateTime.Now, "green", "marek", 40, PetType.Goat, DateTime.Now));
-            AddPet(new Pet("hulk", DateTime.Now, "green", "marek", 20, PetType.Goat, DateTime.Now));
-            AddPet(new Pet("hulk", DateTime.Now, "green", "marek", 50, PetType.Goat, DateTime.Now));
-            AddPet(new Pet("hulk", DateTime.Now, "green", "marek", 30, PetType.Goat, DateTime.Now));
-            AddPet(new Pet("hulk", DateTime.Now, "green", "marek", 40, PetType.Goat, DateTime.Now));
-
-            //Pets = Pets.OrderBy(o=>o.Price).ToList();
-
-        }
+       
 
         public Pet AddPet(Pet pet)
         {

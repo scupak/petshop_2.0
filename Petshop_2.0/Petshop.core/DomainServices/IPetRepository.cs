@@ -11,7 +11,7 @@ namespace Petshop.core.DomainServices
 
         public List<Pet> GetPets();
 
-        public void InitData();
+        
 
     }
 }

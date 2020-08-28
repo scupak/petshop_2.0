@@ -9,16 +9,16 @@ namespace Petshop.Core.Entity
         public DateTime Birthdate { get; set; }
         public DateTime SoldDate { get; set; }
         public string Color { get; set; }
-        public string PreviousOwner { get; set; }
+        public Owner Owner { get; set; }
         public double Price { get; set; }
         public PetType PetType { get; set; }
 
-        public Pet(string name, DateTime birthdate, string color, string previousOwner, double price, PetType petType, DateTime soldDate)
+        public Pet(string name, DateTime birthdate, string color, Owner owner, double price, PetType petType, DateTime soldDate)
         {
             Name = name;
             Birthdate = birthdate;
             Color = color;
-            PreviousOwner = previousOwner;
+            Owner = owner;
             Price = price;
             PetType = petType;
             SoldDate = soldDate;
@@ -27,7 +27,7 @@ namespace Petshop.Core.Entity
 
         public override string ToString()
         {
-            return ($"{Id}:{Name}:{Birthdate}:{SoldDate}:{Color}:{PreviousOwner}:{PetType}:{Price}");
+            return $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(Birthdate)}: {Birthdate}, {nameof(SoldDate)}: {SoldDate}, {nameof(Color)}: {Color}, {nameof(Owner)}: {Owner}, {nameof(Price)}: {Price}, {nameof(PetType)}: {PetType}";
         }
     }
 }
